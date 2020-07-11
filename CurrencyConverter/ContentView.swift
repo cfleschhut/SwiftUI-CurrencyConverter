@@ -8,9 +8,23 @@
 
 import SwiftUI
 
+struct Converter: View {
+    @State var text: String = "100"
+
+    var body: some View {
+        HStack {
+            TextField(text, text: $text).frame(width: 100)
+            Text("EUR")
+            Text("=")
+            Text("TODO")
+            Text("USD")
+        }
+    }
+}
+
 struct ContentView: View {
     var body: some View {
-        Text("Hello, World!")
+        Converter()
     }
 }
 
