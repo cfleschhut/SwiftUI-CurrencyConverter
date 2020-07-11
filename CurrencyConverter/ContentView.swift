@@ -10,13 +10,17 @@ import SwiftUI
 
 struct Converter: View {
     @State var text: String = "100"
+    var output: String {
+        let parsed = Double(text)
+        return parsed.map { String($0 * 1.13) } ?? "parse error"
+    }
 
     var body: some View {
         HStack {
             TextField(text, text: $text).frame(width: 100)
             Text("EUR")
             Text("=")
-            Text("TODO")
+            Text(output)
             Text("USD")
         }
     }
