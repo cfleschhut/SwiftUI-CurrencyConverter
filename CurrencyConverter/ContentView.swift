@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct Converter: View {
+    let rates: [String: Double] = ["USD": 1.13, "GBP": 0.89]
     @State var text: String = "100"
     let formatter: NumberFormatter = {
         let f = NumberFormatter()
@@ -22,12 +23,23 @@ struct Converter: View {
     }
 
     var body: some View {
-        HStack {
-            TextField(text, text: $text).frame(width: 100)
-            Text("EUR")
-            Text("=")
-            Text(output)
-            Text("USD")
+        VStack {
+            HStack {
+                TextField(text, text: $text).frame(width: 100)
+                Text("EUR")
+                Text("=")
+                Text(output)
+                Text("USD")
+            }
+            List {
+                ForEach(self.rates.keys.sorted(), id: \.self) { key in
+                    HStack {
+                        Text(key)
+                        Spacer()
+                        Text("\(self.rates[key]!)")
+                    }
+                }
+            }.frame(height: 100)
         }
     }
 }
