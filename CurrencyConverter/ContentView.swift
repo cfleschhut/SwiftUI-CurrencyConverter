@@ -11,6 +11,10 @@ import SwiftUI
 struct Converter: View {
     let rates: [String: Double] = ["USD": 1.13, "GBP": 0.89]
     @State var text: String = "100"
+    @State var selection: String = "USD"
+    var rate: Double {
+        rates[selection]!
+    }
     let formatter: NumberFormatter = {
         let f = NumberFormatter()
         f.numberStyle = .currency
@@ -21,7 +25,7 @@ struct Converter: View {
         Double(text)
     }
     var output: String {
-        parsedInput.flatMap { formatter.string(from: NSNumber(value: $0 * 1.13)) } ?? "parse error"
+        parsedInput.flatMap { formatter.string(from: NSNumber(value: $0 * self.rate)) } ?? "parse error"
     }
 
     var body: some View {
@@ -31,21 +35,13 @@ struct Converter: View {
                 Text("EUR")
                 Text("=")
                 Text(output)
-                Text("USD")
+                Text(selection)
             }
-            List {
+            Picker(selection: $selection, label: Text("")) {
                 ForEach(self.rates.keys.sorted(), id: \.self) { key in
-                    HStack {
-                        Text(key)
-                        Spacer()
-                        Text("\(self.rates[key]!)")
-                        if self.parsedInput != nil {
-                            Spacer()
-                            Text("\(self.parsedInput! * self.rates[key]!)")
-                        }
-                    }
+                    Text(key)
                 }
-            }.frame(height: 100)
+            }
         }
     }
 }
