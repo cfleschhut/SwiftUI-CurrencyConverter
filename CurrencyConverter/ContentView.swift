@@ -17,9 +17,11 @@ struct Converter: View {
         f.currencySymbol = ""
         return f
     }()
+    var parsedInput: Double? {
+        Double(text)
+    }
     var output: String {
-        let parsed = Double(text)
-        return parsed.flatMap { formatter.string(from: NSNumber(value: $0 * 1.13)) } ?? "parse error"
+        parsedInput.flatMap { formatter.string(from: NSNumber(value: $0 * 1.13)) } ?? "parse error"
     }
 
     var body: some View {
@@ -37,6 +39,10 @@ struct Converter: View {
                         Text(key)
                         Spacer()
                         Text("\(self.rates[key]!)")
+                        if self.parsedInput != nil {
+                            Spacer()
+                            Text("\(self.parsedInput! * self.rates[key]!)")
+                        }
                     }
                 }
             }.frame(height: 100)
