@@ -10,9 +10,15 @@ import SwiftUI
 
 struct Converter: View {
     @State var text: String = "100"
+    let formatter: NumberFormatter = {
+        let f = NumberFormatter()
+        f.numberStyle = .currency
+        f.currencySymbol = ""
+        return f
+    }()
     var output: String {
         let parsed = Double(text)
-        return parsed.map { String($0 * 1.13) } ?? "parse error"
+        return parsed.flatMap { formatter.string(from: NSNumber(value: $0 * 1.13)) } ?? "parse error"
     }
 
     var body: some View {
